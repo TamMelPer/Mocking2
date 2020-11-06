@@ -1,5 +1,4 @@
 require 'docking_station'
-
 # class MockWorkingBike
 #   def working?
 #     true
@@ -11,29 +10,29 @@ require 'docking_station'
 #     false
 #   end
 # end
-
 describe DockingStation do
-
 
 
   describe '#working_bike_count' do
     context '1 working bike' do
       it "returns 1" do
+        mockworkingbike = double('the mock working bike', working?: true)
         bikes = []
-        bikes << MockWorkingBike.new
+        bikes << mockworkingbike
         docking_station = DockingStation.new(bikes)
-
+        #allow(mockworkingbike).to receive(:working?).and_return true
         expect(docking_station.working_bike_count).to eq(1)
       end
     end
 
     context '1 working bike, 1 broken bike' do
       it "returns 1" do
+        mockworkingbike = double('the mock working bike', working?: true)
+        mockbrokenbike = double('the mock broken bike', working?: false)
         bikes = []
-        bikes << MockWorkingBike.new
-        bikes << MockBrokenBike.new
+        bikes << mockworkingbike
+        bikes << mockbrokenbike
         docking_station = DockingStation.new(bikes)
-
         expect(docking_station.working_bike_count).to eq(1)
       end
     end
@@ -41,23 +40,28 @@ describe DockingStation do
 
   describe '#random_bike_working?' do
     context 'random bike is working' do
-      xit 'returns true' do
-        working_bike = MockWorkingBike.new
-        broken_bike = MockBrokenBike.new
-
-        docking_station = DockingStation.new([working_bike, broken_bike])
-
+      it 'returns true' do
+        mockworkingbike = double('the mock working bike', working?: true)
+        mockbrokenbike = double('the mock broken bike', working?: false)
+        bikes = []
+        bikes << mockworkingbike
+        bikes << mockbrokenbike
+        docking_station = DockingStation.new(bikes)
+        allow(bikes).to receive(:sample).and_return mockworkingbike
+        #allow_any_instance_of(Array).to receive(:sample).and_return mockworkingbike
         expect(docking_station.random_bike_working?).to eq(true)
       end
     end
 
     context 'random bike is broken' do
-      xit 'returns false' do
-        working_bike = MockWorkingBike.new
-        broken_bike = MockBrokenBike.new
-
-        docking_station = DockingStation.new([working_bike, broken_bike])
-
+      it 'returns false' do
+        mockworkingbike = double('the mock working bike', working?: true)
+        mockbrokenbike = double('the mock broken bike', working?: false)
+        bikes = []
+        bikes << mockworkingbike
+        bikes << mockbrokenbike
+        docking_station = DockingStation.new(bikes)
+        allow(bikes).to receive(:sample).and_return mockbrokenbike
         expect(docking_station.random_bike_working?).to eq(false)
       end
     end
